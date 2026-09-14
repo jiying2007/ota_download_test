@@ -26,7 +26,7 @@ For compatibility with existing shell workflows, the traditional checksum path r
 sha256sum -c SHA256SUMS.txt
 ```
 
-CI runs both verifier unit tests and the real 76,778,472-byte package identity check on every PR and push to `main`.
+CI runs both verifier unit tests and the real 76,778,472-byte package identity check on every PR and push to `main`. A successful run retains the generated receipt as the `pcr02-ota-verification-receipt` workflow artifact for 30 days, so downstream verification/review can consume the exact machine result rather than infer it from job text.
 
 ## Direct download URLs
 

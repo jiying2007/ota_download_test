@@ -42,3 +42,11 @@ jobs:
           assert receipt['sha256'] == '7687d8058f85271e75ff3726957385afa1618aa2078dc0a6b3215d470af4a4bb'
           assert receipt['source_commit'] == 'eeb926bd1fff75d2a5d5abb9f0ede9c8f582cc6d'
           PY
+
+      - name: Retain PCR02 OTA verification receipt
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pcr02-ota-verification-receipt
+          path: ota-verification-receipt.json
+          if-no-files-found: error
+          retention-days: 30
