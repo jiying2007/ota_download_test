@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "product_id": "PCR02",
+  "version": "v1.1.21",
+  "sources": [
+    {
+      "id": "github-raw-https-main",
+      "url": "https://raw.githubusercontent.com/jiying2007/ota_download_test/main/ota_pkg_v1.1.21.tar.gz",
+      "require_final_https": true
+    },
+    {
+      "id": "github-raw-http-redirect-main",
+      "url": "http://raw.githubusercontent.com/jiying2007/ota_download_test/main/ota_pkg_v1.1.21.tar.gz",
+      "require_final_https": true
+    }
+  ]
+}
