@@ -1,0 +1,44 @@
+name: Verify OTA Artifact
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+
+      - name: Unit tests
+        run: python -m unittest discover -s tests -p 'test_*.py' -v
+
+      - name: Verify PCR02 OTA artifact identity
+        run: python verify_ota_manifest.py ota-manifest.v1.json --root . --output ota-verification-receipt.json
+
+      - name: Check receipt identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          receipt = json.loads(Path('ota-verification-receipt.json').read_text())
+          assert receipt['status'] == 'PASS'
+          assert receipt['product_id'] == 'PCR02'
+          assert receipt['version'] == 'v1.1.21'
+          assert receipt['size_bytes'] == 76778472
+          assert receipt['sha256'] == '7687d8058f85271e75ff3726957385afa1618aa2078dc0a6b3215d470af4a4bb'
+          assert receipt['source_commit'] == 'eeb926bd1fff75d2a5d5abb9f0ede9c8f582cc6d'
+          PY
